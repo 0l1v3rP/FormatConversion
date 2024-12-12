@@ -11,10 +11,6 @@ namespace FormatConversion.Conversion
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         public IEnumerator<IDataComponent> GetEnumerator()
         {
-            return DepthFirstTraversal();
-        }
-        private IEnumerator<IDataComponent> DepthFirstTraversal()
-        {
             var stack = new Stack<IDataComponent>();
             stack.Push(_root);
 
@@ -25,13 +21,14 @@ namespace FormatConversion.Conversion
 
                 if (current is IComplexDataComponent complexComponent)
                 {
-                    foreach (var child in complexComponent.GetChildren().Reverse())
+                    foreach (var child in complexComponent.GetChildren())
                     {
                         stack.Push(child);
                     }
                 }
             }
         }
+
         public void ExecuteCommand(ICommand command)
         {
             foreach (var component in this)

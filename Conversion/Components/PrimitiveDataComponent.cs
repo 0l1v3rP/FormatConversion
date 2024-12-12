@@ -9,7 +9,7 @@ namespace FormatConversion.Conversion.Components
         public Type ValueType { get; } = value?.GetType() ?? typeof(object);
         public override string ToString() => Value?.ToString() ?? "null";
 
-        public static object? ParseStringValue(string value)
+        public static object? ParseStringValue(string? value)
         {
             if (string.IsNullOrWhiteSpace(value))
                 return null;

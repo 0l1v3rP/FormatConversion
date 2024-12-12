@@ -97,7 +97,7 @@ namespace FormatConversion.Conversion.Converters
         {
             writer.WriteStartArray();
 
-            foreach (var item in CollectionDataComponent.Items)
+            foreach (var item in collection.Items)
             {
                 WriteDataComponent(writer, item);
             }
@@ -146,7 +146,7 @@ namespace FormatConversion.Conversion.Converters
             var collection = new CollectionDataComponent();
             foreach (var item in element.EnumerateArray())
             {
-                CollectionDataComponent.Items.Add(ParseDataComponent(item));
+                collection.Items.Add(ParseDataComponent(item));
             }
             return collection;
         }

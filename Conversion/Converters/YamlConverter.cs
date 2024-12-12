@@ -54,7 +54,7 @@ namespace FormatConversion.Conversion.Converters
 
         private List<object?> ConvertCollectionToObject(CollectionDataComponent collection)
         {
-            return CollectionDataComponent.Items
+            return collection.Items
                 .Select(ConvertDataComponentToObject)
                 .ToList();
         }
@@ -76,13 +76,14 @@ namespace FormatConversion.Conversion.Converters
         {
             return value switch
             {
-                IDictionary<object, object> dict => ParseStructure(dict),
-                IEnumerable<object> list => ParseCollection(list),
+                Dictionary<object, object> dict => ParseStructure(dict),
+                Dictionary<string, object> dict => ParseStructure(dict),
+                List<object> list => ParseCollection(list),
                 _ => ParsePrimitive(value),
             };
         }
 
-        private StructuredDataComponent ParseStructure(IDictionary<object, object> dictionary)
+        private StructuredDataComponent ParseStructure<T>(Dictionary<T, object> dictionary) where T : class
         {
             var structure = new StructuredDataComponent();
             foreach (var kvp in dictionary)
@@ -91,20 +92,20 @@ namespace FormatConversion.Conversion.Converters
             }
             return structure;
         }
-
-        private CollectionDataComponent ParseCollection(IEnumerable<object> list)
+        private CollectionDataComponent ParseCollection(List<object> list)
         {
             var collection = new CollectionDataComponent();
             foreach (var item in list)
             {
-                CollectionDataComponent.Items.Add(ParseYamlToDataComponent(item));
+                collection.Items.Add(ParseYamlToDataComponent(item));
             }
             return collection;
         }
 
         private static PrimitiveDataComponent ParsePrimitive(object value)
         {
-            return new PrimitiveDataComponent(value);
+            
+            return new PrimitiveDataComponent(PrimitiveDataComponent.ParseStringValue(value.ToString()));
         }
         #endregion
     }

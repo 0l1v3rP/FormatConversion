@@ -5,7 +5,7 @@ namespace FormatConversion.Conversion.Components
     internal class CollectionDataComponent() : IComplexDataComponent
     {
         public DataComponentType Type => DataComponentType.Collection;
-        public static List<IDataComponent> Items => [];
+        public List<IDataComponent> Items { get; } = [];
         public IEnumerable<IDataComponent> GetChildren()
         {
             return Items;
